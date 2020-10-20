@@ -15,7 +15,7 @@ def runline_encoding(mask):
   # padding the flattened mask before slicing
   padded_mask = np.concatenate([[0], flat_mask, [0]])
   
-  run_arr = np.where(padded_mask[1:] != padded[:-1])[0]
+  run_arr = np.where(padded_mask[1:] != padded_mask[:-1])[0]
   run_arr += 1
   run_arr[1::2] -= run_arr[0::2]
   encoding = ' '.join(str(run) for run in run_arr)
