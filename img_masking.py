@@ -4,6 +4,14 @@
 # libraries required
 # Numpy
 # openCV
+# PIL
+
+# function to convert to numpy array
+
+def img_to_arr(path):
+  img = Image.open(path)
+  array = np.asarray(img)
+  return array
 
 # function for run-length encoding
 
@@ -39,7 +47,9 @@ def runline_encoding(mask):
   for start, end in zip(starting, ending):
     mask[start:end] = 1
   return mask.reshape(shape)
-  
+
+# function to generate mask
+
 def generate_mask(encodings, labels):
   mask = np.zeros(array= , dtype= ) # pass a 3d numpy array and data type
   
@@ -48,11 +58,15 @@ def generate_mask(encodings, labels):
     mask [:,:,index] = mask_rebuild(encoding).T
     
   return mask
-    
+ 
+# function to generate contours
+
 def generate_contour(img, mask, color):
   contour, hierarchy = cv.findContours(mask, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
   img = cv.drawContours(img, contour, -1, color, 2)
   return img
+
+# function for visualizing mask
 
 def draw_mask(img, mask):
   for index in range(mask.shape[-1]):
