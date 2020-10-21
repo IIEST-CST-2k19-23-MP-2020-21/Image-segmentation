@@ -3,6 +3,7 @@
 
 # libraries required
 # Numpy
+# openCV
 
 # function for run-length encoding
 
@@ -39,3 +40,22 @@ def runline_encoding(mask):
     mask[start:end] = 1
   return mask.reshape(shape)
   
+def generate_mask(encodings, labels):
+  mask = np.zeros(array= , dtype= ) # pass a 3d numpy array and data type
+  
+  for encoding, label in zip(encodings, labels):
+    index = label - 1
+    mask [:,:,index] = mask_rebuild(encoding).T
+    
+  return mask
+    
+def generate_contour(img, mask, color):
+  contour, hierarchy = cv.findContours(mask, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+  img = cv.drawContours(img, contour, -1, color, 2)
+  return img
+
+def draw_mask(img, mask):
+  for index in range(mask.shape[-1]):
+    label = index + 1
+    img = generate_contour(img, mask[:, :, index], color=palette[label])
+    return img
