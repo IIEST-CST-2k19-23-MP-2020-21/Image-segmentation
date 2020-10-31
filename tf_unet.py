@@ -4,8 +4,9 @@ import tensorflow as tf
 from tensorflow.keras.models import Model
 import tensorflow.keras.layers as layer
 from tensorflow.keras import backend
-# from tensorflow.keras.optimizers import Nadam
-# from tensorflow.keras.callbacks import History
+from tensorflow.keras.optimizers import Nadam
+from tensorflow.keras.callbacks import History
+from tensorflow.keras.backend import binary_crossentropy
 import keras
 # import h5py
 # import datetime
@@ -98,3 +99,6 @@ def unet():
 
     return model
     
+model = unet()
+model.compile(optimizer = , loss= , metrics=)
+model.fit_generator()
