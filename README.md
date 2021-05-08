@@ -1,5 +1,5 @@
 # Image-segmentation
-Python code for image segmentation
+Python code for segmentation of satellite images
 
 # First Step
 
