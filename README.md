@@ -5,7 +5,7 @@ Python code for segmentation of satellite images
 
 Basic models - Image masking, U-net, CNNs
 
-U-Net Model
+**U-Net Model**
 
 The u-net model is a convolutional neural network that takes an input image and outputs an image of the same size. Imagine the image to be a 3d matrix specifying pixels values, having dimensions (height * width * depth).
 
@@ -15,12 +15,13 @@ The u-net model is a convolutional neural network that takes an input image and 
 
 </div>
 
-Fig: A sample U-Net architecture
+**Fig**: *A sample U-Net architecture*
 
 The architecture of this network is U-shaped. It is symmetric and consists of two major parts — the left part is called contracting path, which is constituted by the general convolutional process; the right part is expansive path, which is constituted by upsampling blocks.
 In the first part, it applies several downscaling operations which decreases the height and width, but increases the depth(number of channels) of the image. The depth of the model is pretty large at this point and allows the model to learn the features of the images. Then we have several upsampling operations which decrease the depth and increase width and height of the image. After the final upsampling, the image output dimensions are the same as the input dimensions.
 
-For our U-net model code:
+
+*For our U-net model code:*
 
 We have used tensorflow.keras.layers
 
