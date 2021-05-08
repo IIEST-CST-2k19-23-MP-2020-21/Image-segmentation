@@ -30,6 +30,22 @@ Constructing segmentation models for single class - building
 
 Final model
 
+<div align="center">
+
+<img src="https://user-images.githubusercontent.com/72441280/117533564-21047080-b00b-11eb-908e-6109c445e780.png">
+
+<img src="https://user-images.githubusercontent.com/72441280/117533583-3d081200-b00b-11eb-897e-a4fee6bd4c5b.png">
+
+<img src="https://user-images.githubusercontent.com/72441280/117533609-5f019480-b00b-11eb-9bc6-d18bfe0c6ebb.png">
+
+<img src="https://user-images.githubusercontent.com/72441280/117533620-688afc80-b00b-11eb-84f7-8138ec06f430.png">
+
+
+</div>
+
+
+
+
 # Datasets used to train and test the models
 
  - https://www.crowdai.org/challenges/mapping-challenge
