@@ -9,13 +9,22 @@ Basic models - Image masking, U-net, CNNs
 
 Constructing segmentation models for single class - building
 
-<div align="left">
+<div align="center">
 
 <img src="https://user-images.githubusercontent.com/72441280/117532960-a25a0400-b007-11eb-9ad5-01365ee75be4.png">
 
 <img src="https://user-images.githubusercontent.com/72441280/117533087-65dad800-b008-11eb-8f58-88c594348fd8.png">
 
-<div>
+</div>
+ 
+<div align="center">
+
+<img src="https://user-images.githubusercontent.com/72441280/117533221-46907a80-b009-11eb-98c6-e5425c5ed173.png">
+
+<img src="https://user-images.githubusercontent.com/72441280/117533312-bbfc4b00-b009-11eb-9d53-a7e0177c42ce.png">
+
+</div>
+
  
 # Third Step
 
