@@ -53,6 +53,79 @@ conv7 = layer.advanced_activations.ELU()(conv7)
 
 Finally we create the model using the input layer (input image), and the final layer of the final upscaling block. The model can then be compiled and trained on our dataset.
 
+## CNN MODEL 
+
+Artificial neural networks (ANNs) comprises node , input layer , many hidden layers and an output layer. Each node, or artificial neuron, connects to another and has an associated weight and threshold.
+
+![total weight of each node](https://drive.google.com/thumbnail?id=1VgTT2sd88g5-wuGeGL20w18BUT9tq64_)
+
+ If this output of a node is above the specified threshold value, that node is activated. Otherwise, no data is passed along to the next layer of through this node in network.
+
+![threshold criteria](https://drive.google.com/thumbnail?id=1QcMQzPbee5hX4T__TgfbjNyvH7NOrdhq)
+
+Problem with ANN is that it has to learn very high number of paramter which depends on input size , which may count to billion parameter per image in a layer.
+
+**CNN (Convolutional Neural Network)** has this advantage over ANN that it does not need to learn so many parameters and number of parameters that needed to learn depends on filter(/Kernel) size which does not depends on Input.
+
+CNN comprises of three kinds of layers:
+    1. The **Convolutional** layer is the core building block of a CNN, and it is where the majority of computation occurs. It requires a few components, which are input data, a filter, and a feature map.
+    ![Farmers Market Finder Demo](https://media3.giphy.com/media/i4NjAwytgIRDW/giphy.gif?cid=790b76111e7adba87f0b31e88a7be8766e9c57eca1eec896&rid=giphy.gif&ct=g)
+    2. **Pooling** layer aims to decrease number of parameters in input. Again, we use a Kernel to swipe over input but this time it does not learn any parameter instead it applies some aggregation function over the receptive field.
+    3.**Fully Connected** layer connects each node in the output layer directly to a node in the previous layer (like layers in ANN).
+    While convolutional and pooling layers tend to use ReLu functions, FC layers usually leverage a softmax activation function to classify inputs appropriately, producing a probability from 0 to 1
+
+##### Code Explaination :
+We are using *Keras functional API* to write our model. You can read about it [here](https://keras.io/guides/functional_api/).
+Making an input node of image size + (3,) i.e if image size is 32 X 32 then our input node will be of size 32 X 32 X 3 (for rgb channels). 
+```
+ip_s = keras.Input(shape=img_size + (3,))
+```
+Spatial convolution over samples
+```
+x = layer.Conv2D(filters=32, kernel_size=(3, 3), strides=(2, 2), padding="same")(ip_s)
+```
+32 filters , each of size 3 x 3 is used , while keeping padding as "same" . Since , our strides is (2,2) , it will decrease our input size.
+
+Now we will normalize the input recieved from previous layer using batch normalization . This will help aginst overfitting of data as well as it will faster the training process
+(Read about [Batch Normalization](https://www.analyticsvidhya.com/blog/2021/03/introduction-to-batch-normalization/))
+
+If a node will remain active in model is depends on its summed weighted input .
+The rectified linear activation function or ReLU for short is a piecewise linear function that will output the input directly if it is positive, otherwise, it will output zero.
+(Read about [Activation function](https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks/))
+
+```
+x = layer.BatchNormalization()(x)
+# Rectified linear unit is used as activation function
+x = layer.Activation("relu")(x)
+```
+Instead of having normal convolution layers in our model, we are including layers having Depthwise Seperable Convolution and then pointwise convolution. This will helps us in reducing computational complexity as well as faster training.
+**layer.SeparableConv2D** is doing Depthwise Seperable Convolution
+[Read about Depthwise Seperable Convolution](https://towardsdatascience.com/a-basic-introduction-to-separable-convolutions-b99ec3102728)
+```
+prev_block_activation = x
+
+for filters in arr:
+    # arr contains different values of filters
+    x = layer.Activation("relu")(x)
+    # spatial convolution followed by pointwise convolution
+    x = layer.SeparableConv2D(filters, kernel_size=(3, 3), padding="same")(x)
+    x = layer.BatchNormalization()(x)
+
+    x = layer.Activation("relu")(x)
+    x = layer.SeparableConv2D(filters, kernel_size=(3, 3), padding="same")(x)
+    x = layer.BatchNormalization()(x)
+    
+    # Using max pooling
+    # on 2D spatial data
+    x = layer.MaxPooling2D(pool_size=, strides=(2, 2), padding="same")(x)
+    res = layer.Conv2D(filters, kernel_size=(1, 1), strides=(2, 2), padding="same")(prev_block_activation)
+    x = layer.add([x, res]) 
+    # Update value
+    prev_block_activation = x  
+```
+
+After doing downsampling in our model, we will do Upsampling. We are using *Nearest Neighbour* and *Transposed Convolution* for Upsampling.
+[Transposed Convolution](https://towardsdatascience.com/transposed-convolution-demystified-84ca81b4baba)
 
 # Second Step
 
