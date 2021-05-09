@@ -126,6 +126,30 @@ for filters in arr:
 After doing downsampling in our model, we will do Upsampling. We are using *Nearest Neighbour* and *Transposed Convolution* for Upsampling.
 [Transposed Convolution](https://towardsdatascience.com/transposed-convolution-demystified-84ca81b4baba)
 
+```
+# Upsampling
+for filters in arr:
+    # arr contains different values for filters
+    x = layer.Activation("relu")(x)
+    x = layer.Conv2DTranspose(filters, kernel_size=(3, 3), padding="same")(x)
+    x = layer.BatchNormalization()(x)
+
+    x = layer.Activation("relu")(x)
+    x = layer.Conv2DTranspose(filters, kernel_size=(3, 3), padding="same")(x)
+    x = layer.BatchNormalization()(x)
+
+    x = layer.UpSampling2D(2)(x)
+
+    res = layer.UpSampling2D(2)(prev_block_activation)
+    res = layer.Conv2D(filters, kernel_size=(1, 1), padding="same")(res)
+    x = layer.add([x, res])  
+    prev_block_activation = x 
+```
+Finally creating a fully connected layer using softmax activaion
+```
+op_s = layer.Conv2D(N, (3, 3), activation="softmax", padding="same")(x)
+```
+
 # Second Step
 
 Constructing segmentation models for single class - building
