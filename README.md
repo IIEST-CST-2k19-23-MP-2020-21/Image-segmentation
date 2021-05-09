@@ -57,21 +57,20 @@ Finally we create the model using the input layer (input image), and the final l
 
 Artificial neural networks (ANNs) comprises node , input layer , many hidden layers and an output layer. Each node, or artificial neuron, connects to another and has an associated weight and threshold.
 
-![total weight of each node](https://drive.google.com/thumbnail?id=1VgTT2sd88g5-wuGeGL20w18BUT9tq64_)
+![weight](https://user-images.githubusercontent.com/64643228/117578123-68255b00-b10a-11eb-8282-34ce5b1f079e.png)
 
  If this output of a node is above the specified threshold value, that node is activated. Otherwise, no data is passed along to the next layer of through this node in network.
-
-![threshold criteria](https://drive.google.com/thumbnail?id=1QcMQzPbee5hX4T__TgfbjNyvH7NOrdhq)
+![threshold](https://user-images.githubusercontent.com/64643228/117578129-72475980-b10a-11eb-9bbb-c0cde07fa60f.png)
 
 Problem with ANN is that it has to learn very high number of paramter which depends on input size , which may count to billion parameter per image in a layer.
 
 **CNN (Convolutional Neural Network)** has this advantage over ANN that it does not need to learn so many parameters and number of parameters that needed to learn depends on filter(/Kernel) size which does not depends on Input.
 
-CNN comprises of three kinds of layers:
-    1. The **Convolutional** layer is the core building block of a CNN, and it is where the majority of computation occurs. It requires a few components, which are input data, a filter, and a feature map.
-    ![Farmers Market Finder Demo](https://media3.giphy.com/media/i4NjAwytgIRDW/giphy.gif?cid=790b76111e7adba87f0b31e88a7be8766e9c57eca1eec896&rid=giphy.gif&ct=g)
-    2. **Pooling** layer aims to decrease number of parameters in input. Again, we use a Kernel to swipe over input but this time it does not learn any parameter instead it applies some aggregation function over the receptive field.
-    3.**Fully Connected** layer connects each node in the output layer directly to a node in the previous layer (like layers in ANN).
+CNN comprises of three kinds of layers:<br>
+    1. The **Convolutional** layer is the core building block of a CNN, and it is where the majority of computation occurs. It requires a few components, which are input data, a filter, and a feature map.<br>
+![CNN Demo](https://media3.giphy.com/media/i4NjAwytgIRDW/giphy.gif?cid=790b76111e7adba87f0b31e88a7be8766e9c57eca1eec896&rid=giphy.gif&ct=g)<br>
+    2. **Pooling** layer aims to decrease number of parameters in input. Again, we use a Kernel to swipe over input but this time it does not learn any parameter instead it applies some aggregation function over the receptive field.<br>
+    3. **Fully Connected** layer connects each node in the output layer directly to a node in the previous layer (like layers in ANN).
     While convolutional and pooling layers tend to use ReLu functions, FC layers usually leverage a softmax activation function to classify inputs appropriately, producing a probability from 0 to 1
 
 ##### Code Explaination :
