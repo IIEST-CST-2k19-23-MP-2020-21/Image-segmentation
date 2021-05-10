@@ -149,6 +149,75 @@ Finally creating a fully connected layer using softmax activaion
 ```
 op_s = layer.Conv2D(N, (3, 3), activation="softmax", padding="same")(x)
 ```
+# Image - masking
+
+## A brief introduction to Run-Length encoding
+Run-length encoding (RLE) is a form of lossless data compression in which runs of data (sequences in which the same data value occurs in many consecutive data elements) are stored as a single data value and count, rather than as the original run. RLE is a simple yet efficient format for storing binary masks. RLE first divides a vector (or vectorized image) into a series of piecewise constant regions and then for each piece simply stores the length of that piece. For example, given M=[0 0 1 1 1 0 1] the RLE counts would be [2 3 1 1(Corresponding to the 2 zeroes, 3 ones, 1 zero and 1 one)
+
+<img src="img/3.JPG">
+
+## Going through the code
+-
+```
+def runline_encoding(mask):
+  flat_mask = mask.flatten()
+
+  padded_mask = np.concatenate([[0], flat_mask, [0]])
+
+  run_arr = np.where(padded_mask[1:] != padded_mask[:-1])[0]
+  run_arr += 1
+  run_arr[1::2] -= run_arr[0::2]
+  encoding = ' '.join(str(run) for run in run_arr)
+  return encoding
+```
+The image is passed as a numpy array, `mask` and the function `runline_encoding` returns a runline encoding of the mask.
+-
+```
+def generate_mask(encodings, labels):
+  mask = np.zeros(array= , dtype= ) # pass a 3d numpy array and data type
+
+  for encoding, label in zip(encodings, labels):
+    index = label - 1
+    mask [:,:,index] = mask_rebuild(encoding).T
+
+  return mask
+```
+The `generate_mask` function accepts the runline encoding and a dictionary consisting of the labels(taken from the MS coco dataset) and returns a one-dimensional numpy array.
+
+-
+```
+def mask_rebuild(encoding, shape):
+  run_arr = np.asarray([int(run) for run in encoding.split(' ')])
+  run_arr[1::2] += run_arr[0::2]
+  run_arr -= 1
+  starting, ending = run_arr[0::2], run_arr[1::2]
+
+  height, width = shape
+  mask = np.zeros(height*width, dtype = uint8)
+  for start, end in zip(starting, ending):
+    mask[start:end] = 1
+  return mask.reshape(shape)
+```
+The returned array when passed through the `mask_rebuild` function along with a tuple specifying the dimension, returns the mask of the specified size as a numpy array.
+
+<div align="center">
+
+###### Areas selected for masking
+
+<img src="https://user-images.githubusercontent.com/72441280/117532960-a25a0400-b007-11eb-9ad5-01365ee75be4.png">
+
+<br>
+<br>
+
+###### The masked image
+
+<img src="https://user-images.githubusercontent.com/72441280/117533087-65dad800-b008-11eb-8f58-88c594348fd8.png">
+
+
+</div>
+
+<div align="center">
+
 
 # Second Step
 
