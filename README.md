@@ -28,7 +28,7 @@ We have used tensorflow.keras.layers
 We have 5 downsampling blocks. The first block takes the input image. In each downsampling block, we have two 3x3 convolutions, each convolution followed by batch normalization and activated with ‘elu’. Finally we have a max pooling operation which reduces the height and width of the image for next block.
 
 The third downsampling block is shown below:
-```
+```py
 conv3 = layer.Convolution2D(128, 3, 3, border_mode='same', init='he_uniform')(pool2)
 conv3 = layer.normalization.BatchNormalization(mode=0, axis=1)(conv3)
 conv3 = layer.advanced_activations.ELU()(conv3)
@@ -41,7 +41,7 @@ pool3 = layer.MaxPooling2D(pool_size=(2, 2))(conv3)
 Next we have 4 upsampling blocks. In each upsampling block, we combine the final layer of previous block with a final layer (the last layer before max pooling) of a downsampling block (which is at same level), and this produces a layer with increased height and width. Now we again have two 3x3 convolutions, each convolution followed by batch normalization and activated with ‘elu’, on this upscaled layer. For the last upsampling block, the final layer is subjected to a 1x1 convolution operation with ‘sigmoid’ activation. The ‘sigmoid’ activation produces all values in the range of [0,1].
 
 The second upsampling block is shown below:
-```
+```py
 up7 = merge([UpSampling2D(size=(2, 2))(conv6), conv3], mode='concat', concat_axis=1)
 conv7 = layer.Convolution2D(128, 3, 3, border_mode='same', init='he_uniform')(up7)
 conv7 = layer.normalization.BatchNormalization(mode=0, axis=1)(conv7)
@@ -76,11 +76,11 @@ CNN comprises of three kinds of layers:<br>
 ##### Code Explaination :
 We are using *Keras functional API* to write our model. You can read about it [here](https://keras.io/guides/functional_api/).
 Making an input node of image size + (3,) i.e if image size is 32 X 32 then our input node will be of size 32 X 32 X 3 (for rgb channels). 
-```
+```py
 ip_s = keras.Input(shape=img_size + (3,))
 ```
 Spatial convolution over samples
-```
+```py
 x = layer.Conv2D(filters=32, kernel_size=(3, 3), strides=(2, 2), padding="same")(ip_s)
 ```
 32 filters , each of size 3 x 3 is used , while keeping padding as "same" . Since , our strides is (2,2) , it will decrease our input size.
@@ -92,7 +92,7 @@ If a node will remain active in model is depends on its summed weighted input .
 The rectified linear activation function or ReLU for short is a piecewise linear function that will output the input directly if it is positive, otherwise, it will output zero.
 (Read about [Activation function](https://machinelearningmastery.com/rectified-linear-activation-function-for-deep-learning-neural-networks/))
 
-```
+```py
 x = layer.BatchNormalization()(x)
 # Rectified linear unit is used as activation function
 x = layer.Activation("relu")(x)
@@ -100,7 +100,7 @@ x = layer.Activation("relu")(x)
 Instead of having normal convolution layers in our model, we are including layers having Depthwise Seperable Convolution and then pointwise convolution. This will helps us in reducing computational complexity as well as faster training.
 **layer.SeparableConv2D** is doing Depthwise Seperable Convolution
 [Read about Depthwise Seperable Convolution](https://towardsdatascience.com/a-basic-introduction-to-separable-convolutions-b99ec3102728)
-```
+```py
 prev_block_activation = x
 
 for filters in arr:
@@ -126,7 +126,7 @@ for filters in arr:
 After doing downsampling in our model, we will do Upsampling. We are using *Nearest Neighbour* and *Transposed Convolution* for Upsampling.
 [Transposed Convolution](https://towardsdatascience.com/transposed-convolution-demystified-84ca81b4baba)
 
-```
+```py
 # Upsampling
 for filters in arr:
     # arr contains different values for filters
@@ -146,7 +146,7 @@ for filters in arr:
     prev_block_activation = x 
 ```
 Finally creating a fully connected layer using softmax activaion
-```
+```py
 op_s = layer.Conv2D(N, (3, 3), activation="softmax", padding="same")(x)
 ```
 # Image - masking
@@ -158,7 +158,7 @@ Run-length encoding (RLE) is a form of lossless data compression in which ru
 
 ## Going through the code
 
-```
+```py
 def runline_encoding(mask):
   flat_mask = mask.flatten()
 
@@ -173,7 +173,7 @@ def runline_encoding(mask):
 - The image is passed as a numpy array, `mask` and the function `runline_encoding` returns a runline encoding of the mask.
 
 
-```
+```py
 def generate_mask(encodings, labels):
   mask = np.zeros(array= , dtype= ) # pass a 3d numpy array and data type
 
@@ -186,7 +186,7 @@ def generate_mask(encodings, labels):
 - The `generate_mask` function accepts the runline encoding and a dictionary consisting of the labels(taken from the MS coco dataset) and returns a one-dimensional numpy array.
 
 
-```
+```py
 def mask_rebuild(encoding, shape):
   run_arr = np.asarray([int(run) for run in encoding.split(' ')])
   run_arr[1::2] += run_arr[0::2]
